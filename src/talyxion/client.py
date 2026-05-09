@@ -10,12 +10,15 @@ import httpx
 from ._config import Config
 from ._http import HttpClient
 from .models.status import ApiStatus
+from .resources.alphas import AlphasResource
 from .resources.datafields import DatafieldsResource
+from .resources.market import MarketResource, WalletResource
 from .resources.rates import RatesResource
 from .resources.screener import ScreenerResource
 from .resources.signals import SignalsResource
 from .resources.simulations import SimulationsResource
 from .resources.ticker import TickerHandle
+from .resources.trading import TradingResource
 from .streaming import Stream
 
 
@@ -55,6 +58,11 @@ class Talyxion:
         self.datafields = DatafieldsResource(self._http)
         self.rates = RatesResource(self._http)
         self.simulations = SimulationsResource(self._http)
+        # New domain resources (Phase 2)
+        self.alphas = AlphasResource(self._http)
+        self.trading = TradingResource(self._http)
+        self.market = MarketResource(self._http)
+        self.wallet = WalletResource(self._http)
         self.stream = Stream(self._config)
 
     @property
@@ -65,7 +73,7 @@ class Talyxion:
         return TickerHandle(self._http, symbol)
 
     def status(self) -> ApiStatus:
-        body = self._http.get("/api/v1/status/")
+        body = self._http.get("/api/v1/talyxion/status/")
         return ApiStatus.model_validate(body.get("data") or {})
 
     def close(self) -> None:

@@ -8,11 +8,11 @@ from ._base import Resource, extract_data
 
 class DatafieldsResource(Resource):
     def list(self) -> list[Datafield]:
-        body = self._http.get("/api/v1/datafields/")
+        body = self._http.get("/api/v1/talyxion/datafields/")
         items = extract_data(body) or []
         return [Datafield.model_validate(it) for it in items]
 
     def get(self, key: str) -> DatafieldDetail:
-        body = self._http.get(f"/api/v1/datafields/{key}/")
+        body = self._http.get(f"/api/v1/talyxion/datafields/{key}/")
         field = body.get("field") or {"key": key, "label": key}
         return DatafieldDetail.model_validate({**field, "data": extract_data(body)})

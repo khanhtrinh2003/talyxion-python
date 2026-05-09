@@ -29,7 +29,7 @@ class SignalsResource(Resource):
             "limit": limit,
             "offset": offset,
         }
-        body = self._http.get("/api/v1/signals/", params=params)
+        body = self._http.get("/api/v1/talyxion/signals/", params=params)
         page: Page[Signal] = build_page(body, Signal, list(extract_data(body) or []))
 
         def _loader(lim: int, off: int) -> Page[Signal]:
@@ -54,7 +54,7 @@ class SignalsResource(Resource):
     ) -> Page[SignalHistoryItem]:
         """GET /api/v1/signals/history/"""
         params = {"ticker": ticker, "days": days, "limit": limit, "offset": offset}
-        body = self._http.get("/api/v1/signals/history/", params=params)
+        body = self._http.get("/api/v1/talyxion/signals/history/", params=params)
         page: Page[SignalHistoryItem] = build_page(body, SignalHistoryItem, list(extract_data(body) or []))
 
         def _loader(lim: int, off: int) -> Page[SignalHistoryItem]:

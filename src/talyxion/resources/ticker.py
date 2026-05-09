@@ -15,7 +15,7 @@ class TickerHandle:
         self.symbol = ticker.upper()
 
     def info(self) -> TickerInfo:
-        body = self._http.get(f"/api/v1/ticker/{self.symbol}/")
+        body = self._http.get(f"/api/v1/talyxion/ticker/{self.symbol}/")
         return TickerInfo.model_validate(extract_data(body))
 
     def __repr__(self) -> str:

@@ -12,7 +12,7 @@ from ._base import Resource
 
 class SimulationsResource(Resource):
     def get(self, task_id: str) -> SimulationStatus:
-        body = self._http.get(f"/api/v1/simulations/{task_id}/")
+        body = self._http.get(f"/api/v1/talyxion/simulations/{task_id}/")
         # Backend wraps either as `{"data": {...}}` or returns the AsyncResult dict directly.
         raw = body.get("data")
         payload: dict[str, Any] = raw if isinstance(raw, dict) else body

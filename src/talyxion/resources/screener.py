@@ -24,7 +24,7 @@ class ScreenerResource(Resource):
             "limit": limit,
             "offset": offset,
         }
-        body = self._http.get("/api/v1/screener/", params=params)
+        body = self._http.get("/api/v1/talyxion/screener/", params=params)
         page: Page[ScreenerItem] = build_page(body, ScreenerItem, list(extract_data(body) or []))
 
         def _loader(lim: int, off: int) -> Page[ScreenerItem]:

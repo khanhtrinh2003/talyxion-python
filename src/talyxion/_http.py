@@ -56,6 +56,12 @@ class HttpClient:
     def post(self, path: str, *, json: dict[str, Any] | None = None) -> dict[str, Any]:
         return self._request("POST", path, json=json)
 
+    def patch(self, path: str, *, json: dict[str, Any] | None = None) -> dict[str, Any]:
+        return self._request("PATCH", path, json=json)
+
+    def delete(self, path: str) -> dict[str, Any]:
+        return self._request("DELETE", path)
+
     def _request(self, method: str, path: str, **kwargs: Any) -> dict[str, Any]:
         last_exc: Exception | None = None
         for attempt in range(self._config.max_retries + 1):
