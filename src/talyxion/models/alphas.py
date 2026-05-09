@@ -72,14 +72,14 @@ class PnLSeries(BaseModel):
     def __len__(self) -> int:
         return min(len(self.labels), len(self.values))
 
-    def to_pandas(self) -> "pd.Series":
+    def to_pandas(self) -> pd.Series:
         """Convert to a ``pandas.Series`` indexed by datetime."""
         import pandas as pd
 
         idx = pd.to_datetime(self.labels, errors="coerce")
         return pd.Series(self.values, index=idx, name="equity")
 
-    def to_dataframe(self) -> "pd.DataFrame":
+    def to_dataframe(self) -> pd.DataFrame:
         """Equity + drawdown DataFrame for quick plotting."""
         import pandas as pd
 

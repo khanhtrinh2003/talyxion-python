@@ -1,7 +1,8 @@
 """``/api/v1/trading/`` — credentials + profiles + cycles + positions."""
 from __future__ import annotations
 
-from typing import Any, Iterator
+from collections.abc import Sequence
+from typing import Any
 
 from .._http import HttpClient
 from ..models.common import Page
@@ -74,7 +75,7 @@ class ProfileCyclesResource:
             return self.list(limit=lim, offset=off)
         return page.with_loader(_loader)
 
-    def tail(self, n: int = 10) -> list[CycleRun]:
+    def tail(self, n: int = 10) -> Sequence[CycleRun]:
         return self.list(limit=n).items
 
 
@@ -97,12 +98,12 @@ class ProfileHandle:
     def __repr__(self) -> str:
         return f"<Profile #{self._profile.id} {self._profile.name} status={self._profile.status}>"
 
-    def refresh(self) -> "ProfileHandle":
+    def refresh(self) -> ProfileHandle:
         body = self._http.get(f"/api/v1/talyxion/trading/profiles/{self._profile.id}/")
         self._profile = Profile.model_validate(extract_data(body))
         return self
 
-    def _action(self, action: str, **body: Any) -> "ProfileHandle":
+    def _action(self, action: str, **body: Any) -> ProfileHandle:
         resp = self._http.post(
             f"/api/v1/talyxion/trading/profiles/{self._profile.id}/{action}/",
             json=body or {},
@@ -110,16 +111,16 @@ class ProfileHandle:
         self._profile = Profile.model_validate(extract_data(resp))
         return self
 
-    def activate(self) -> "ProfileHandle":
+    def activate(self) -> ProfileHandle:
         return self._action("activate")
 
-    def pause(self, *, reason: str = "manual") -> "ProfileHandle":
+    def pause(self, *, reason: str = "manual") -> ProfileHandle:
         return self._action("pause", reason=reason)
 
-    def resume(self) -> "ProfileHandle":
+    def resume(self) -> ProfileHandle:
         return self._action("resume")
 
-    def archive(self) -> "ProfileHandle":
+    def archive(self) -> ProfileHandle:
         return self._action("archive")
 
     def positions(self) -> PositionsSnapshot:

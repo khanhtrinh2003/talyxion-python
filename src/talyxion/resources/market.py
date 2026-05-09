@@ -3,7 +3,6 @@ from __future__ import annotations
 
 from typing import Any
 
-from .._http import HttpClient
 from ..models.common import Page
 from ..models.market import (
     CreditTopUp,
@@ -96,13 +95,12 @@ class MarketResource(Resource):
     def library(self) -> list[License]:
         """My licenses (own + purchased + admin-granted)."""
         body = self._http.get("/api/v1/talyxion/market/library/")
-        return [License.model_validate(l) for l in extract_data(body) or []]
+        return [License.model_validate(item) for item in extract_data(body) or []]
 
     def seller_stats(self) -> dict[str, Any]:
         body = self._http.get("/api/v1/talyxion/market/seller/stats/")
-        data = extract_data(body)
-        # listings serialized as Listing summaries
-        data["listings"] = [Listing.model_validate(l) for l in data.get("listings") or []]
+        data: dict[str, Any] = extract_data(body) or {}
+        data["listings"] = [Listing.model_validate(item) for item in data.get("listings") or []]
         data["wallet"] = WalletAccount.model_validate(data.get("wallet") or {})
         return data
 

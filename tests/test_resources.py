@@ -22,7 +22,7 @@ def test_screener(client, base_url):
         "meta": {"timestamp": "...", "request_id": "r"},
     }
     with respx.mock(base_url=base_url) as router:
-        router.get("/api/v1/screener/").mock(return_value=httpx.Response(200, json=payload))
+        router.get("/api/v1/talyxion/screener/").mock(return_value=httpx.Response(200, json=payload))
         page = client.screener.run(asset_class="crypto", min_conviction=0.8)
     assert page[0].ticker == "BTC"
     assert page[0].conviction == 0.91
@@ -37,7 +37,7 @@ def test_datafields_list(client, base_url):
         "meta": {"timestamp": "...", "request_id": "r"},
     }
     with respx.mock(base_url=base_url) as router:
-        router.get("/api/v1/datafields/").mock(return_value=httpx.Response(200, json=payload))
+        router.get("/api/v1/talyxion/datafields/").mock(return_value=httpx.Response(200, json=payload))
         items = client.datafields.list()
     assert {it.key for it in items} == {"pe_ratio", "altman_z"}
 
@@ -49,7 +49,7 @@ def test_datafield_detail(client, base_url):
         "meta": {"timestamp": "...", "request_id": "r"},
     }
     with respx.mock(base_url=base_url) as router:
-        router.get("/api/v1/datafields/pe_ratio/").mock(return_value=httpx.Response(200, json=payload))
+        router.get("/api/v1/talyxion/datafields/pe_ratio/").mock(return_value=httpx.Response(200, json=payload))
         detail = client.datafields.get("pe_ratio")
     assert detail.label == "P/E"
     assert detail.data["series"][0]["value"] == 12.3
@@ -73,7 +73,7 @@ def test_ticker_info_uppercases(client, base_url):
         "meta": {"timestamp": "...", "request_id": "r"},
     }
     with respx.mock(base_url=base_url) as router:
-        route = router.get("/api/v1/ticker/VIC/").mock(return_value=httpx.Response(200, json=payload))
+        route = router.get("/api/v1/talyxion/ticker/VIC/").mock(return_value=httpx.Response(200, json=payload))
         info = client.ticker("vic").info()
     assert route.called
     assert info.ticker == "VIC"
@@ -83,7 +83,7 @@ def test_ticker_info_uppercases(client, base_url):
 
 def test_rates_snapshot(client, base_url):
     with respx.mock(base_url=base_url) as router:
-        router.get("/api/v1/rates-terminal/data/").mock(
+        router.get("/api/v1/talyxion/rates-terminal/data/").mock(
             return_value=httpx.Response(200, json={"data": {"DGS10": 4.21}, "meta": {}})
         )
         snap = client.rates.snapshot()
@@ -92,7 +92,7 @@ def test_rates_snapshot(client, base_url):
 
 def test_rates_series_with_chart(client, base_url):
     with respx.mock(base_url=base_url) as router:
-        route = router.get("/api/v1/rates-terminal/series/").mock(
+        route = router.get("/api/v1/talyxion/rates-terminal/series/").mock(
             return_value=httpx.Response(200, json={"data": [[1, 2]], "meta": {}})
         )
         series = client.rates.series("DGS10", chart=True)
@@ -102,7 +102,7 @@ def test_rates_series_with_chart(client, base_url):
 
 def test_rates_yahoo(client, base_url):
     with respx.mock(base_url=base_url) as router:
-        router.get("/api/v1/rates-terminal/yahoo/").mock(
+        router.get("/api/v1/talyxion/rates-terminal/yahoo/").mock(
             return_value=httpx.Response(200, json={"data": {"price": 100}, "meta": {}})
         )
         q = client.rates.yahoo("AAPL")
@@ -112,7 +112,7 @@ def test_rates_yahoo(client, base_url):
 
 def test_simulations_get(client, base_url):
     with respx.mock(base_url=base_url) as router:
-        router.get("/api/v1/simulations/abc-123/").mock(
+        router.get("/api/v1/talyxion/simulations/abc-123/").mock(
             return_value=httpx.Response(
                 200,
                 json={"data": {"status": "running", "progress": 42.0, "message": "step 4/10"}, "meta": {}},
@@ -127,7 +127,7 @@ def test_simulations_get(client, base_url):
 
 def test_status_endpoint(client, base_url):
     with respx.mock(base_url=base_url) as router:
-        router.get("/api/v1/status/").mock(
+        router.get("/api/v1/talyxion/status/").mock(
             return_value=httpx.Response(
                 200,
                 json={

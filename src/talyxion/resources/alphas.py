@@ -1,6 +1,7 @@
 """``/api/v1/alphas/`` — alpha research endpoints."""
 from __future__ import annotations
 
+from collections.abc import Sequence
 from typing import Any
 
 from ..models.alphas import (
@@ -102,7 +103,7 @@ class AlphasResource(Resource):
 
     def simulate_super(
         self,
-        selections: list[str],
+        selections: Sequence[str],
         combo: str,
         *,
         region: str,

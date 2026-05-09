@@ -16,7 +16,7 @@ from talyxion import (
 
 def test_401_raises_auth_error(client, base_url):
     with respx.mock(base_url=base_url) as router:
-        router.get("/api/v1/status/").mock(
+        router.get("/api/v1/talyxion/status/").mock(
             return_value=httpx.Response(
                 401, json={"error": "invalid_api_key", "message": "Invalid or revoked API key."}
             )
@@ -29,7 +29,7 @@ def test_401_raises_auth_error(client, base_url):
 
 def test_402_raises_tier_error(client, base_url):
     with respx.mock(base_url=base_url) as router:
-        router.get("/api/v1/status/").mock(
+        router.get("/api/v1/talyxion/status/").mock(
             return_value=httpx.Response(
                 402,
                 json={
@@ -48,7 +48,7 @@ def test_402_raises_tier_error(client, base_url):
 
 def test_403_scope_denied(client, base_url):
     with respx.mock(base_url=base_url) as router:
-        router.get("/api/v1/status/").mock(
+        router.get("/api/v1/talyxion/status/").mock(
             return_value=httpx.Response(403, json={"error": "scope_denied", "message": "no scope"})
         )
         with pytest.raises(TalyxionPermissionError):
@@ -57,7 +57,7 @@ def test_403_scope_denied(client, base_url):
 
 def test_404_not_found(client, base_url):
     with respx.mock(base_url=base_url) as router:
-        router.get("/api/v1/ticker/NOPE/").mock(
+        router.get("/api/v1/talyxion/ticker/NOPE/").mock(
             return_value=httpx.Response(404, json={"error": "not_found", "message": "no ticker"})
         )
         with pytest.raises(TalyxionNotFoundError):
@@ -66,7 +66,7 @@ def test_404_not_found(client, base_url):
 
 def test_429_rate_limit_with_retry_after(client, base_url):
     with respx.mock(base_url=base_url) as router:
-        router.get("/api/v1/status/").mock(
+        router.get("/api/v1/talyxion/status/").mock(
             return_value=httpx.Response(
                 429,
                 headers={"Retry-After": "42"},
@@ -83,7 +83,7 @@ def test_500_raises_server_error(base_url, api_key):
 
     c = Talyxion(api_key=api_key, base_url=base_url, max_retries=0, backoff_base=0)
     with respx.mock(base_url=base_url) as router:
-        router.get("/api/v1/status/").mock(
+        router.get("/api/v1/talyxion/status/").mock(
             return_value=httpx.Response(500, json={"error": "internal_error", "message": "boom"})
         )
         with pytest.raises(TalyxionServerError):
@@ -108,7 +108,7 @@ def test_5xx_retries_then_succeeds(base_url, api_key):
         "meta": {},
     }
     with respx.mock(base_url=base_url) as router:
-        route = router.get("/api/v1/status/").mock(
+        route = router.get("/api/v1/talyxion/status/").mock(
             side_effect=[
                 httpx.Response(503, json={"error": "internal_error", "message": "x"}),
                 httpx.Response(200, json=payload),

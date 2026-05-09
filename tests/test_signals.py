@@ -29,7 +29,7 @@ def _page(items, total=10, limit=2, offset=0):
 
 def test_signals_list_parses_items(client, base_url):
     with respx.mock(base_url=base_url) as router:
-        router.get("/api/v1/signals/").mock(
+        router.get("/api/v1/talyxion/signals/").mock(
             return_value=httpx.Response(200, json=_page([SIGNAL_ITEM, SIGNAL_ITEM]))
         )
         page = client.signals.list(date="2026-04-27", asset_class="vn_equity")
@@ -41,7 +41,7 @@ def test_signals_list_parses_items(client, base_url):
 
 def test_signals_list_passes_query_params(client, base_url):
     with respx.mock(base_url=base_url) as router:
-        route = router.get("/api/v1/signals/").mock(
+        route = router.get("/api/v1/talyxion/signals/").mock(
             return_value=httpx.Response(200, json=_page([]))
         )
         client.signals.list(
@@ -64,7 +64,7 @@ def test_signals_list_iter_all_paginates(client, base_url):
     page2 = _page([{**SIGNAL_ITEM, "ticker": "HPG"}], total=2, limit=1, offset=1)
 
     with respx.mock(base_url=base_url) as router:
-        route = router.get("/api/v1/signals/").mock(
+        route = router.get("/api/v1/talyxion/signals/").mock(
             side_effect=[
                 httpx.Response(200, json=page1),
                 httpx.Response(200, json=page2),
@@ -93,7 +93,7 @@ def test_signals_history(client, base_url):
         "meta": {"timestamp": "...", "request_id": "r"},
     }
     with respx.mock(base_url=base_url) as router:
-        router.get("/api/v1/signals/history/").mock(return_value=httpx.Response(200, json=payload))
+        router.get("/api/v1/talyxion/signals/history/").mock(return_value=httpx.Response(200, json=payload))
         page = client.signals.history("HPG", days=7)
     assert page[0].outcome == "win"
     assert page[0].realized_return_pct == 4.2

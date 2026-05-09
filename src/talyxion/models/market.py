@@ -1,6 +1,8 @@
 """Pydantic models for marketplace + wallet endpoints."""
 from __future__ import annotations
 
+from typing import Any
+
 from pydantic import BaseModel, ConfigDict
 
 
@@ -64,8 +66,8 @@ class Listing(BaseModel):
 
 class ListingDetail(Listing):
     description_md: str = ""
-    seller: dict = {}
-    owner_stats: dict | None = None  # only populated for seller / admin
+    seller: dict[str, Any] = {}
+    owner_stats: dict[str, Any] | None = None  # only populated for seller / admin
 
 
 class License(BaseModel):
@@ -148,4 +150,4 @@ class TopUpResponse(BaseModel):
     topup: CreditTopUp
     qr_url: str
     memo: str
-    bank: dict
+    bank: dict[str, Any]

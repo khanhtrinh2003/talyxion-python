@@ -23,7 +23,7 @@ super_result = (
 """
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Literal, Optional
+from typing import TYPE_CHECKING, Literal
 
 if TYPE_CHECKING:
     from ..client import Talyxion
@@ -59,7 +59,7 @@ class Backtest:
         self._neutralization = neutralization
         self._save = bool(save)
 
-        self._mode: Optional[Literal["regular", "super"]] = None
+        self._mode: Literal["regular", "super"] | None = None
         # Regular-only
         self._code: str = ""
         self._delay: int = 1
@@ -69,7 +69,7 @@ class Backtest:
         self._combo: str = ""
         self._limit_selection: int = 10
 
-    def alpha(self, code: str, *, delay: int = 1, long_only: bool = False) -> "Backtest":
+    def alpha(self, code: str, *, delay: int = 1, long_only: bool = False) -> Backtest:
         """Configure as a Regular alpha simulation."""
         if self._mode is not None:
             raise ValueError(f"Backtest mode already set to {self._mode!r}.")
@@ -85,7 +85,7 @@ class Backtest:
         *,
         combo: str,
         limit_selection: int = 10,
-    ) -> "Backtest":
+    ) -> Backtest:
         """Configure as a Super alpha simulation (linear combo of Regular alpha ids)."""
         if self._mode is not None:
             raise ValueError(f"Backtest mode already set to {self._mode!r}.")
@@ -97,7 +97,7 @@ class Backtest:
         self._limit_selection = int(limit_selection)
         return self
 
-    def simulate(self, client: "Talyxion") -> "SimulationResult":
+    def simulate(self, client: Talyxion) -> SimulationResult:
         if self._mode == "regular":
             return client.alphas.simulate_regular(
                 self._code,

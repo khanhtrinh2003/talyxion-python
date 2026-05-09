@@ -25,7 +25,7 @@ def test_client_reads_env_key(monkeypatch):
 
 def test_client_sends_bearer_header(client, base_url, api_key):
     with respx.mock(base_url=base_url) as router:
-        route = router.get("/api/v1/status/").mock(
+        route = router.get("/api/v1/talyxion/status/").mock(
             return_value=_ok(
                 {
                     "data": {
