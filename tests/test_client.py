@@ -19,7 +19,7 @@ def test_client_requires_api_key(monkeypatch):
 
 def test_client_reads_env_key(monkeypatch):
     monkeypatch.setenv("TALYXION_API_KEY", "env_key_xyz")
-    c = Talyxion(base_url="https://api.test.talyxion.com")
+    c = Talyxion(base_url="https://test.local")
     assert c.config.api_key == "env_key_xyz"
 
 
@@ -63,5 +63,5 @@ def test_ws_base_url_translation():
 def test_default_base_url(monkeypatch):
     monkeypatch.delenv("TALYXION_BASE_URL", raising=False)
     c = Talyxion(api_key="tk_x")
-    assert c.config.base_url == "https://api.talyxion.com"
-    assert c.config.ws_base_url == "wss://api.talyxion.com"
+    assert c.config.base_url == "https://talyxion.com"
+    assert c.config.ws_base_url == "wss://talyxion.com"

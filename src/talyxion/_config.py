@@ -7,7 +7,7 @@ from dataclasses import dataclass
 
 from .errors import TalyxionAuthError
 
-DEFAULT_BASE_URL = "https://api.talyxion.com"
+DEFAULT_BASE_URL = "https://talyxion.com"
 DEFAULT_TIMEOUT = 30.0
 DEFAULT_MAX_RETRIES = 3
 DEFAULT_BACKOFF_BASE = 0.5

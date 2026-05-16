@@ -4,7 +4,7 @@ import pytest
 
 from talyxion import Talyxion
 
-BASE_URL = "https://api.test.talyxion.com"
+BASE_URL = "https://test.local"
 API_KEY = "tk_test_dummy_key_value"
 
 

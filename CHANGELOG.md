@@ -1,5 +1,42 @@
 # Changelog
 
+## 0.4.5 — Hotfix: default base URL points at the wrong host
+
+**Critical fix.** Every call from a freshly-installed v0.4.4 client (with no
+`base_url=` argument and no `TALYXION_BASE_URL` env var) failed with
+``TalyxionConnectionError: [Errno 8] nodename nor servname provided, or not
+known``. The default was hard-coded to ``https://api.talyxion.com`` — a
+subdomain that does not exist. The Talyxion deployment runs on the single
+origin ``talyxion.com`` (web + REST + WebSocket all under one host).
+
+### What changed
+
+- ``talyxion._config.DEFAULT_BASE_URL`` → ``https://talyxion.com``.
+- README "Configuration" table already documents the corrected default.
+- ``tests/test_client.py`` ``test_default_base_url`` updated to assert the
+  new default (and the corresponding ``wss://talyxion.com``).
+- ``tests/conftest.py`` switched its fake test host to
+  ``https://test.local`` so nothing in the test suite references a
+  Talyxion subdomain that doesn't exist.
+- ``docs/PUBLISHING.md`` smoke-test block no longer references a fictitious
+  ``staging.talyxion.com`` — there is no staging host, only production.
+- README override example now points at ``http://localhost:8000`` (Django
+  runserver) instead of a fake staging URL.
+
+### Migration
+
+If you're on 0.4.4 and don't want to upgrade yet, set the env var:
+
+```bash
+export TALYXION_BASE_URL=https://talyxion.com
+```
+
+or pass it explicitly:
+
+```python
+tlx = Talyxion(api_key="tk_...", base_url="https://talyxion.com")
+```
+
 ## 0.4.4 — Windows support: first-class macOS / Linux / Windows parity
 
 Every Phase 2.1 + 2.2 feature now runs natively on Windows 10+ in

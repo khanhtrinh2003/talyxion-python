@@ -78,7 +78,7 @@ from talyxion import Talyxion
 
 tlx = Talyxion()                              # picks up TALYXION_API_KEY
 tlx = Talyxion(api_key="tk_...")              # or pass explicitly
-tlx = Talyxion(base_url="https://staging.talyxion.com")  # override host
+tlx = Talyxion(base_url="http://localhost:8000")  # local dev override
 ```
 
 The CLI stores credentials in the OS keyring (Keychain / Secret Service /

@@ -127,9 +127,8 @@ and pick `testpypi` as the target.
 pip install --upgrade talyxion
 python -c "import talyxion; print(talyxion.__version__)"
 
-# Smoke test against staging:
-TALYXION_BASE_URL=https://api.staging.talyxion.com \
-TALYXION_API_KEY=tk_staging_... \
+# Smoke test against production (talyxion.com is the only host — no staging subdomain):
+TALYXION_API_KEY=tk_... \
 python -c "from talyxion import Talyxion; print(Talyxion().status())"
 ```
 
