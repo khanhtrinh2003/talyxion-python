@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-# Extract sdk/python/ from the VNBrain monorepo into a standalone git repo.
+# Extract sdk/python/ from the Talyxion monorepo into a standalone git repo.
 #
 # Usage:
 #   ./scripts/extract_to_standalone_repo.sh [TARGET_DIR]
 #
-# Default TARGET_DIR is ../../../talyxion-python (sibling of VNBrain).
+# Default TARGET_DIR is ../../../talyxion-python (sibling of Talyxion).
 # After running, push that directory to a fresh GitHub repo, e.g.:
 #   gh repo create talyxion/talyxion-python --public --source=$TARGET_DIR --push
 #

@@ -10,7 +10,7 @@ readme = "README.md"
 license = { file = "LICENSE" }
 requires-python = ">=3.10"
 authors = [{ name = "Talyxion", email = "support@talyxion.com" }]
-keywords = ["talyxion", "vnbrain", "trading", "signals", "fintech", "quant", "sdk"]
+keywords = ["talyxion", "trading", "signals", "fintech", "quant", "sdk"]
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -33,6 +33,13 @@ dependencies = [
 
 [project.optional-dependencies]
 pandas = ["pandas>=2"]
+cli = [
+    "keyring>=24",
+    "click>=8.1",
+    "rich>=13",
+    "platformdirs>=4",
+    "prompt_toolkit>=3.0",
+]
 dev = [
     "pytest>=8",
     "pytest-cov>=5",
@@ -42,6 +49,10 @@ dev = [
     "build>=1.2",
     "twine>=5",
 ]
+
+[project.scripts]
+talyxion = "talyxion.cli.main:cli"
+talyxion-runner = "talyxion.cli.runner_entry:main"
 
 [project.urls]
 Homepage = "https://talyxion.com"

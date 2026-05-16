@@ -1,9 +1,9 @@
 # Publishing the Talyxion Python SDK
 
 Step-by-step playbook for releasing the SDK to PyPI **without exposing the
-VNBrain monorepo**. Two repos involved:
+Talyxion monorepo**. Two repos involved:
 
-- **`VNBrain` (monorepo, private)** — source of truth; SDK lives at `sdk/python/`.
+- **`Talyxion` (monorepo, private)** — source of truth; SDK lives at `sdk/python/`.
 - **`khanhtrinh2003/talyxion-python` (public, GitHub)** — extracted standalone repo
   containing only `sdk/python/`'s contents. PyPI publishes from here.
 
@@ -45,7 +45,7 @@ gh repo create khanhtrinh2003/talyxion-python --public --source=. --remote=origi
 ```
 
 The script copies only `sdk/python/**` (excluding `.venv`, `dist`, caches),
-initialises a fresh git repo, and makes one commit. **The VNBrain monorepo is
+initialises a fresh git repo, and makes one commit. **The Talyxion monorepo is
 never pushed.** If you prefer to keep monorepo commit history, replace the
 `git init` call with `git subtree split --prefix=sdk/python -b sdk-only`.
 
@@ -94,7 +94,7 @@ rsync -a --delete \
     --exclude '.venv' \
     --exclude 'dist' \
     --exclude '__pycache__' \
-    /path/to/VNBrain/sdk/python/ ./
+    /path/to/Talyxion/sdk/python/ ./
 
 git add -A
 git commit -m "release: v0.1.1"
@@ -141,7 +141,7 @@ python -c "from talyxion import Talyxion; print(Talyxion().status())"
 - The `extract_to_standalone_repo.sh` script.
 
 What never goes to GitHub:
-- The rest of `VNBrain/**` (Django apps, secrets, internal docs).
+- The rest of `Talyxion/**` (Django apps, secrets, internal docs).
 - `.env`, credentials, `db.sqlite3`, `media/`, `notebooks/`.
 
 The extraction script is the firewall — it copies only `sdk/python/**`.

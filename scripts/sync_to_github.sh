@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Sync sdk/python/ from the VNBrain monorepo into an existing standalone
+# Sync sdk/python/ from the Talyxion monorepo into an existing standalone
 # GitHub repo (e.g. https://github.com/khanhtrinh2003/talyxion-python).
 #
 # Usage:

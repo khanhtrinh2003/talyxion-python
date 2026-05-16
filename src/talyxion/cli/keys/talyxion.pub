@@ -1,0 +1,18 @@
+# Cosign public key — embedded in the CLI binary for self-update signature verification.
+#
+# REPLACE THIS PLACEHOLDER with the real public key before the first
+# production release. Generation procedure (one-time, on a YubiKey):
+#
+#   cosign generate-key-pair --kms hashivault://talyxion-cli-signing
+#   cosign public-key --key hashivault://talyxion-cli-signing > talyxion.pub
+#
+# The corresponding private key MUST NEVER touch a CI runner — it lives on
+# the YubiKey + KMS, and CI authenticates via OIDC + ephemeral signing
+# session.
+#
+# Until the real key is generated, ``talyxion update`` will skip signature
+# verification (with a loud warning) but still enforces SHA-256.
+
+-----BEGIN PUBLIC KEY-----
+PLACEHOLDER_NOT_A_REAL_KEY_REPLACE_BEFORE_PRODUCTION_RELEASE
+-----END PUBLIC KEY-----
